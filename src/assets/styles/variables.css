@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Tokens de diseño (Figma: WIP - Apartado de Aula)
+   ========================================================================== */
+
+:root {
+  /* Paleta base (círculos del frame de componentes) */
+  --color-primary: #006db6;
+  --color-primary-soft: rgba(0, 109, 182, 0.2);
+  --color-text: #464646;
+  --color-text-muted: #757575;
+
+  /* Escala de azul derivada del dashboard */
+  --color-primary-strong: #15578f;
+  --color-primary-50: #e3eef7;
+  --color-primary-100: #dce9f5;
+  --color-primary-gradient-end: #d2ecfe;
+
+  /* Superficies y bordes */
+  --color-bg: #f6f9fc;
+  --color-surface: #ffffff;
+  --color-border: #d5e3f0;
+  --color-border-strong: #9cc3e8;
+  --color-divider: #edf3f9;
+  --color-on-primary: #ffffff;
+
+  /* Estados (StatusChip / Button danger) */
+  --color-success-bg: #ddf3e6;
+  --color-success-text: #1b7f4d;
+  --color-warning-bg: #fff1db;
+  --color-warning-text: #9a5b00;
+  --color-danger-bg: #fde2e1;
+  --color-danger-text: #b42318;
+  --color-danger-border: #f1c5c2;
+
+  /* Tipografía */
+  --font-family: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  --font-size-2xs: 0.6875rem;  /* 11px - chips, grupos de nav */
+  --font-size-xs: 0.75rem;     /* 12px - texto más pequeño */
+  --font-size-ui: 0.8125rem;   /* 13px - nav y botones del dashboard */
+  --font-size-sm: 0.875rem;    /* 14px - texto normal */
+  --font-size-md: 1rem;        /* 16px - sub texto */
+  --font-size-lg: 1.25rem;     /* 20px - título */
+  --font-size-xl: 1.5625rem;   /* 25px - super título */
+  --font-size-display: 2rem;   /* 32px - valores de StatCard */
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Espaciado */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+
+  /* Bordes */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-2xl: 12px;
+  --radius-full: 999px;
+
+  /* Tamaños */
+  --icon-size: 24px;
+  --sidebar-width: 224px;
+  --control-height: 47px;
+  --button-height-lg: 49px;
+
+  --transition-fast: 150ms ease;
+  --focus-ring: 0 0 0 3px var(--color-primary-soft);
+}
+
+[data-theme='dark'] {
+  --color-text: #ffffff;
+  --color-text-muted: #a0a0a0;
+  --color-bg: #121212;
+  --color-surface: #1e1e1e;
+  --color-border: #2e3a46;
+  --color-divider: #26303a;
+}

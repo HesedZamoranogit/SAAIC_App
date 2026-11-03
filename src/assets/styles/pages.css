@@ -1,0 +1,286 @@
+/* ==========================================================================
+   Estilos específicos de páginas: Login, Dashboard
+   ========================================================================== */
+
+/* ---------- Login ---------- */
+
+/*
+  --u equivale a 1px del frame de Figma (1546 x 1024).
+  Escala todo el login en proporcion a la pantalla, sin pasar del tamaño original.
+*/
+.login-page {
+  --u: clamp(0.6px, min(100vw / 1546, 100svh / 1024), 1px);
+
+  /* Tokens de componentes escalados dentro del login */
+  --font-size-sm: calc(14 * var(--u));
+  --font-size-lg: calc(20 * var(--u));
+  --space-3: calc(12 * var(--u));
+  --space-4: calc(16 * var(--u));
+  --space-5: calc(20 * var(--u));
+  --space-6: calc(24 * var(--u));
+  --radius-sm: calc(4 * var(--u));
+  --radius-lg: calc(8 * var(--u));
+  --icon-size: calc(24 * var(--u));
+  --control-height: calc(47 * var(--u));
+  --button-height-lg: calc(49 * var(--u));
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: var(--space-6) var(--space-4);
+  overflow: hidden;
+  background-color: var(--color-surface);
+}
+
+/* Onda decorativa del fondo */
+.login-page::before {
+  content: '';
+  position: absolute;
+  top: 35%;
+  left: -2.5%;
+  width: 113%;
+  height: 83%;
+  border-radius: 50%;
+  background: linear-gradient(225deg, var(--color-primary) 0%, var(--color-primary-gradient-end) 100%);
+  pointer-events: none;
+}
+
+.login-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  width: min(100%, calc(536 * var(--u)));
+  min-height: calc(638 * var(--u));
+  padding: calc(78 * var(--u)) calc(62 * var(--u));
+  border: max(2px, calc(4 * var(--u))) solid rgba(0, 109, 182, 0.5);
+  border-radius: calc(12 * var(--u));
+  background-color: var(--color-surface);
+}
+
+.login-card .field {
+  gap: calc(10 * var(--u));
+}
+
+.login-card__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  text-align: center;
+}
+
+.login-card__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text);
+}
+
+.login-card__subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.login-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.login-form__forgot {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+}
+
+.login-form__submit {
+  width: min(100%, calc(343 * var(--u)));
+}
+
+.login-page__copyright {
+  position: absolute;
+  top: calc(24 * var(--u));
+  right: calc(33 * var(--u));
+  z-index: 1;
+  font-size: max(12px, calc(15 * var(--u)));
+  color: #002c49;
+}
+
+.login-page__logo {
+  position: absolute;
+  right: calc(33 * var(--u));
+  bottom: calc(39 * var(--u));
+  z-index: 1;
+  width: calc(172 * var(--u));
+  height: calc(133 * var(--u));
+}
+
+/* Celular: tamaño original (sin escalar) y cuadro a todo el ancho */
+@media (max-width: 600px) {
+  .login-page {
+    --u: 1px;
+
+    place-items: start center;
+    padding-top: calc(48 * var(--u));
+  }
+
+  .login-page::before {
+    top: 55%;
+    left: -40%;
+    width: 180%;
+    height: 70%;
+  }
+
+  .login-card {
+    min-height: auto;
+    padding: var(--space-8) var(--space-5);
+    border-width: 2px;
+  }
+
+  .login-page__copyright {
+    top: auto;
+    right: 0;
+    bottom: var(--space-4);
+    left: 0;
+    font-size: var(--font-size-xs);
+    text-align: center;
+    color: var(--color-on-primary);
+  }
+
+  .login-page__logo {
+    display: none;
+  }
+}
+
+/* ---------- Dashboard ---------- */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+}
+
+.stat-card__label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.stat-card__value {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+.stat-card__detail {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.dashboard__content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  flex: 1;
+}
+
+.dashboard__content--with-aside {
+  grid-template-columns: 1fr 340px;
+}
+
+.dashboard__calendar {
+  min-height: 320px;
+}
+
+/* Espacio reservado para el calendario semanal (pendiente) */
+.calendar-placeholder {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.agenda-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.agenda-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.agenda-item__time {
+  flex-shrink: 0;
+  width: 48px;
+  font-size: var(--font-size-ui);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+}
+
+.agenda-item__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.agenda-item__title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.agenda-item__meta {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.card__link {
+  font-size: var(--font-size-ui);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.card__link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 1024px) {
+  .dashboard__content--with-aside {
+    grid-template-columns: 1fr;
+  }
+}

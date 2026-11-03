@@ -1,0 +1,246 @@
+/* ==========================================================================
+   Componentes globales: Button, Input, StatusChip, Card
+   ========================================================================== */
+
+/* ---------- Button ---------- */
+
+.btn {
+  --btn-bg: transparent;
+  --btn-color: var(--color-text);
+  --btn-border: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 11px var(--space-4);
+  border: 1px solid var(--btn-border);
+  border-radius: var(--radius-md);
+  background-color: var(--btn-bg);
+  color: var(--btn-color);
+  font-size: var(--font-size-ui);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast),
+    box-shadow var(--transition-fast), opacity var(--transition-fast);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  --btn-bg: var(--color-primary);
+  --btn-color: var(--color-on-primary);
+}
+
+.btn--primary:hover:not(:disabled) {
+  --btn-bg: var(--color-primary-strong);
+}
+
+.btn--secondary {
+  --btn-bg: var(--color-surface);
+  --btn-color: var(--color-primary-strong);
+  --btn-border: var(--color-border-strong);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  --btn-bg: var(--color-primary-50);
+}
+
+.btn--outline {
+  --btn-bg: var(--color-surface);
+  --btn-color: var(--color-primary);
+  --btn-border: var(--color-primary);
+}
+
+.btn--outline:hover:not(:disabled) {
+  --btn-bg: var(--color-primary-50);
+}
+
+.btn--danger {
+  --btn-bg: var(--color-surface);
+  --btn-color: var(--color-danger-text);
+  --btn-border: var(--color-danger-border);
+}
+
+.btn--danger:hover:not(:disabled) {
+  --btn-bg: var(--color-danger-bg);
+}
+
+/* Tamaño grande: botones de formulario (Login / Confirmar / Regresar) */
+.btn--lg {
+  min-height: var(--button-height-lg);
+  padding-inline: var(--space-6);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+}
+
+.btn--block {
+  width: 100%;
+}
+
+/* ---------- Input ---------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.field__label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.field__control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--control-height);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.field__control:focus-within {
+  box-shadow: var(--focus-ring);
+}
+
+.field__input {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-3) 0;
+  border: 0;
+  background: transparent;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.field__input::placeholder {
+  color: var(--color-text);
+  opacity: 1;
+}
+
+.field__input:focus {
+  outline: none;
+}
+
+.field__adornment {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--color-text);
+}
+
+.field__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.field__hint,
+.field__error {
+  font-size: var(--font-size-xs);
+}
+
+.field__hint {
+  color: var(--color-text-muted);
+}
+
+.field__error {
+  color: var(--color-danger-text);
+}
+
+.field--invalid .field__control {
+  border-color: var(--color-danger-text);
+}
+
+.field--disabled .field__control {
+  border-color: var(--color-border);
+  background-color: var(--color-bg);
+  cursor: not-allowed;
+}
+
+/* ---------- StatusChip ---------- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+.chip--info {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-strong);
+}
+
+.chip--success {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.chip--warning {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning-text);
+}
+
+.chip--danger {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger-text);
+}
+
+/* ---------- Card ---------- */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+}
+
+.card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.card__title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.card__subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
