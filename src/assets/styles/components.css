@@ -182,6 +182,156 @@
   cursor: not-allowed;
 }
 
+/* ---------- Select (usa la base de .field) ---------- */
+
+.field__select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.field__select:disabled {
+  cursor: not-allowed;
+}
+
+/* Flecha dibujada con CSS, ya que appearance: none oculta la nativa */
+.field__control--select::after {
+  content: '';
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  border-right: 2px solid var(--color-text);
+  border-bottom: 2px solid var(--color-text);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+/* ---------- Form (tarjeta de formulario de las paginas internas) ---------- */
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: var(--form-max-width);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+/* Campo que ocupa todo el ancho de la fila */
+.form-grid__full {
+  grid-column: 1 / -1;
+}
+
+/* Fila completa dividida en tres columnas (ej. fecha / hora inicio / hora fin) */
+.form-grid__thirds {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.form-error {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger-text);
+  font-size: var(--font-size-sm);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-divider);
+}
+
+@media (max-width: 600px) {
+  .form-card {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .form-grid,
+  .form-grid__thirds {
+    grid-template-columns: 1fr;
+  }
+
+  /* Boton principal arriba y a todo el ancho */
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+}
+
+/* ---------- Opciones tipo tarjeta (RadioGroup y casillas de dias) ---------- */
+
+.choice-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-3);
+}
+
+/* Opciones cortas (ej. dias de la semana) */
+.choice-group--compact {
+  grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-height);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.choice:hover {
+  background-color: var(--color-primary-50);
+}
+
+.choice:focus-within {
+  box-shadow: var(--focus-ring);
+}
+
+.choice--checked {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-50);
+}
+
+.choice--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.choice__input {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--color-primary);
+  cursor: inherit;
+}
+
 /* ---------- StatusChip ---------- */
 
 .chip {
@@ -214,6 +364,71 @@
   color: var(--color-danger-text);
 }
 
+/* ---------- EspacioCard (catalogo) ---------- */
+
+.espacio-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  height: 100%;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+}
+
+.espacio-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.espacio-card__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.espacio-card__title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.espacio-card__subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.espacio-card__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.espacio-card__detail {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.espacio-card__detail dt {
+  color: var(--color-text-muted);
+}
+
+.espacio-card__detail dd {
+  margin: 0;
+  color: var(--color-text);
+}
+
+.espacio-card__footer {
+  margin-top: auto;
+}
+
 /* ---------- Card ---------- */
 
 .card {
@@ -243,4 +458,62 @@
 .card__subtitle {
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
+}
+
+/* ---------- Disponibilidad (bloques horarios de un espacio) ---------- */
+
+.slot-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.slot {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding: 10px var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg);
+  font-size: var(--font-size-ui);
+}
+
+.slot__time {
+  flex-shrink: 0;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.slot__label {
+  min-width: 0;
+  color: var(--color-text-muted);
+}
+
+.slot--ocupado {
+  background-color: var(--color-warning-bg);
+}
+
+.slot--ocupado .slot__label {
+  color: var(--color-warning-text);
+}
+
+.slot--conflicto {
+  background-color: var(--color-danger-bg);
+}
+
+.slot--conflicto .slot__label {
+  color: var(--color-danger-text);
+}
+
+/* Cargando, sin espacio elegido o error */
+.slot-message {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.slot-message--error {
+  color: var(--color-danger-text);
 }

@@ -1,19 +1,20 @@
 import { useId, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import type { Rol } from '../../types/usuario';
+import { useAuth } from '../../hooks/useAuth';
 import Sidebar from './Sidebar';
 
-type AppLayoutProps = {
-  rol: Rol;
-};
-
 //Estructura comun de las paginas internas: Sidebar + contenido
-const AppLayout = ({ rol }: AppLayoutProps) => {
+const AppLayout = () => {
+  const { user, logout } = useAuth();
+
   //Solo aplica en pantallas pequeñas, donde el Sidebar es un menu deslizable
   const [menuOpen, setMenuOpen] = useState(false);
   const sidebarId = useId();
 
   const closeMenu = () => setMenuOpen(false);
+
+  //ProtectedRoute garantiza la sesion; esto solo satisface al tipado
+  if (!user) return null;
 
   return (
     <div
@@ -37,7 +38,7 @@ const AppLayout = ({ rol }: AppLayoutProps) => {
         <p className="app-topbar__brand">SAAIC</p>
       </header>
 
-      <Sidebar id={sidebarId} rol={rol} open={menuOpen} onNavigate={closeMenu} />
+      <Sidebar id={sidebarId} user={user} open={menuOpen} onNavigate={closeMenu} onLogout={logout} />
 
       {menuOpen && <div className="app-layout__backdrop" aria-hidden="true" onClick={closeMenu} />}
 

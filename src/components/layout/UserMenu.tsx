@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 type UserMenuProps = {
   nombre: string;
   estado: string;
+  onLogout: () => void;
 };
 
-const UserMenu = ({ nombre, estado }: UserMenuProps) => {
+const UserMenu = ({ nombre, estado, onLogout }: UserMenuProps) => {
   const [open, setOpen] = useState(false);
   const menuId = useId();
 
@@ -36,11 +37,11 @@ const UserMenu = ({ nombre, estado }: UserMenuProps) => {
             </Link>
           </li>
           <li>
-            <Link to="/" className="user-menu__item user-menu__item--danger" onClick={close}>
+            <button type="button" className="user-menu__item user-menu__item--danger" onClick={onLogout}>
               {/* Icono logout */}
               <span className="icon-slot" aria-hidden="true" />
               Cerrar Sesión
-            </Link>
+            </button>
           </li>
         </ul>
       )}

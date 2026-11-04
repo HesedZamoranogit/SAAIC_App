@@ -1,14 +1,15 @@
 import { lazy, Suspense } from 'react'
-import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom'
+import { AdminRoute, GuestRoute, ProtectedRoute } from './components/auth/AuthRoutes'
 import AppLayout from './components/layout/AppLayout'
-import type { Rol } from './types/usuario'
+import AuthProvider from './context/AuthProvider'
 
 //Inicializacion de Lazy Loading
 const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
-
-//Pendiente: obtener el rol del usuario autenticado
-const ROL_ACTUAL: Rol = 'admin';
+const Catalogo = lazy(() => import('./pages/Catalogo'));
+const NuevoEspacio = lazy(() => import('./pages/NuevoEspacio'));
+const NuevaReserva = lazy(() => import('./pages/NuevaReserva'));
 
 function App() {
 
@@ -16,15 +17,33 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path='/' element={<Login />} />
-            {/* Paginas internas con Sidebar */}
-            <Route element={<AppLayout rol={ROL_ACTUAL} />}>
-              <Route path='/Home' element={<Home rol={ROL_ACTUAL} />} />
-            </Route>
-          </Routes>
-        </Suspense>
+        <AuthProvider>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              {/* Solo sin sesion */}
+              <Route element={<GuestRoute />}>
+                <Route path='/' element={<Login />} />
+              </Route>
+
+              {/* Solo con sesion, dentro del layout con Sidebar */}
+              <Route element={<ProtectedRoute />}>
+                <Route element={<AppLayout />}>
+                  <Route path='/Home' element={<Home />} />
+                  <Route path='/catalogo' element={<Catalogo />} />
+                  <Route path='/reservas/nueva' element={<NuevaReserva />} />
+
+                  {/* Solo administrador */}
+                  <Route element={<AdminRoute />}>
+                    <Route path='/espacios/nuevo' element={<NuevoEspacio />} />
+                  </Route>
+                </Route>
+              </Route>
+
+              {/* Rutas aun sin pagina */}
+              <Route path='*' element={<Navigate to='/' replace />} />
+            </Routes>
+          </Suspense>
+        </AuthProvider>
       </BrowserRouter>
     </>
   )

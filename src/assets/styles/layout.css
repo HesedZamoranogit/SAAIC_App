@@ -222,6 +222,16 @@
   gap: var(--space-1);
 }
 
+.page-header__back {
+  align-self: flex-start;
+  font-size: var(--font-size-ui);
+  text-decoration: none;
+}
+
+.page-header__back:hover {
+  text-decoration: underline;
+}
+
 .page-header__title {
   font-size: 1.375rem;
   font-weight: var(--font-weight-semibold);

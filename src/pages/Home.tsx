@@ -5,11 +5,7 @@ import PageHeader from '../components/layout/PageHeader';
 import { ButtonLink } from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import type { Estado } from '../components/ui/StatusChip';
-import type { Rol } from '../types/usuario';
-
-type HomeProps = {
-    rol: Rol;
-};
+import { useAuth } from '../hooks/useAuth';
 
 //Datos de ejemplo para la estructura, se reemplazaran por el servicio
 const STATS = {
@@ -32,7 +28,9 @@ const AGENDA_HOY: { hora: string; titulo: string; detalle: string; estado: Estad
     { hora: '18:00', titulo: 'Reunión de coordinación', detalle: 'Sala de juntas · Cultura', estado: 'Confirmada' },
 ];
 
-const Home = ({ rol }: HomeProps) => {
+const Home = () => {
+    const { user } = useAuth();
+    const rol = user?.rol ?? 'usuario';
     const esAdmin = rol === 'admin';
 
     return (

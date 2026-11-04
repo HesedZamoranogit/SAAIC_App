@@ -71,6 +71,7 @@
   --sidebar-width: 224px;
   --control-height: 47px;
   --button-height-lg: 49px;
+  --form-max-width: 860px;
 
   --transition-fast: 150ms ease;
   --focus-ring: 0 0 0 3px var(--color-primary-soft);

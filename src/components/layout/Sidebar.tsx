@@ -1,19 +1,21 @@
 import { useId } from 'react';
 import { NavLink } from 'react-router-dom';
-import type { Rol } from '../../types/usuario';
+import type { SessionUser } from '../../models/Auth.types';
 import { NAV_GROUPS } from './navigation';
 import UserMenu from './UserMenu';
 
 type SidebarProps = {
   id?: string;
-  rol: Rol;
+  user: SessionUser;
   //Estado del menu en pantallas pequeñas
   open?: boolean;
   onNavigate?: () => void;
+  onLogout: () => void;
 };
 
-const Sidebar = ({ id, rol, open = false, onNavigate }: SidebarProps) => {
+const Sidebar = ({ id, user, open = false, onNavigate, onLogout }: SidebarProps) => {
   const baseId = useId();
+  const { rol } = user;
 
   return (
     <aside id={id} className={`sidebar${open ? ' sidebar--open' : ''}`}>
@@ -55,7 +57,7 @@ const Sidebar = ({ id, rol, open = false, onNavigate }: SidebarProps) => {
         })}
       </nav>
 
-      <UserMenu nombre="Carlos Andres Valdez Acosta" estado="Usuario Activo" />
+      <UserMenu nombre={user.nombreCompleto} estado="Usuario Activo" onLogout={onLogout} />
     </aside>
   );
 };

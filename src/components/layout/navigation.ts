@@ -8,6 +8,7 @@ export type NavItem = {
 };
 
 export type NavGroup = {
+  roles?: Rol[];
   title: string;
   items: NavItem[];
 };
@@ -19,20 +20,20 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [{ label: 'Dashboard', to: '/Home' }],
   },
   {
-    title: 'Centro de Reservas',
+    title: 'Centro General',
     items: [
       { label: 'Catálogo de Espacios', to: '/catalogo' },
-      { label: 'Reservas', to: '/reservas' },
+      { label: 'Tus Reservas', to: '/mis-reservas' },
       { label: 'Reportes', to: '/reportes', roles: ['admin'] },
       { label: 'Asistencia', to: '/asistencia' },
     ],
   },
   {
+    roles: ['admin'],
     title: 'Centro Administrativo',
     items: [
-      { label: 'Nuevo Usuario', to: '/usuarios/nuevo', roles: ['admin'] },
-      { label: 'Mis Datos', to: '/mis-datos' },
-      { label: 'Cambiar Contraseña', to: '/cambiar-contrasena' },
+      { label: 'Usuarios', to: '/usuarios' }, //Todo el crud de usuarios
+      { label: 'Espacios', to: '/espacios' }, //aqui ira la agregacion de tipo de espacio, campus, y el espacio nuevamente en si
     ],
   },
 ];
