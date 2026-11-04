@@ -500,9 +500,6 @@ const NuevaReserva = () => {
                     )}
 
                     <div className="form-actions">
-                        <ButtonLink to="/catalogo" variant="secondary" size="lg">
-                            Cancelar
-                        </ButtonLink>
                         <Button type="submit" size="lg" disabled={loading || cargandoEspacios}>
                             {loading ? 'Registrando...' : 'Registrar reserva'}
                         </Button>
