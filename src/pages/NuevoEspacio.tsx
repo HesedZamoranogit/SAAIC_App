@@ -8,21 +8,14 @@ import { useCatalogos } from '../hooks/useCatalogos';
 import { useEspacio } from '../hooks/useEspacio';
 import { ESTADO_ESPACIO, type EstadoEspacio } from '../models/Espacio.types';
 import { toApiTime } from '../utils/fecha';
+import {
+    NOMBRE_ESPACIO_MAX,
+    validateEspacio,
+    type EspacioFieldErrors,
+    type EspacioFormValues,
+} from '../validations/espacio.validate';
 
-//Los inputs trabajan con texto; se convierte a numero al enviar
-type FormValues = {
-    nombre: string;
-    idTipoEspacio: string;
-    idCampus: string;
-    horaApertura: string;
-    horaCierre: string;
-    capacidadMaxima: string;
-    estado: string;
-};
-
-type FieldErrors = Partial<Record<keyof FormValues, string>>;
-
-const INITIAL_VALUES: FormValues = {
+const INITIAL_VALUES: EspacioFormValues = {
     nombre: '',
     idTipoEspacio: '',
     idCampus: '',
@@ -40,43 +33,19 @@ const NuevoEspacio = () => {
     const { espacio, loading, error } = useEspacio();
     const { campuses, tiposEspacio, loading: catalogosLoading, error: catalogosError } = useCatalogos();
 
-    const [values, setValues] = useState<FormValues>(INITIAL_VALUES);
-    const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+    const [values, setValues] = useState<EspacioFormValues>(INITIAL_VALUES);
+    const [fieldErrors, setFieldErrors] = useState<EspacioFieldErrors>({});
 
-    const handleChange = (field: keyof FormValues) => (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (field: keyof EspacioFormValues) => (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setValues((prev) => ({ ...prev, [field]: e.target.value }));
         setFieldErrors((prev) => ({ ...prev, [field]: undefined }));
-    };
-
-    //Mismas reglas que la API (EspacioService)
-    const validate = (): FieldErrors => {
-        const errors: FieldErrors = {};
-        const nombre = values.nombre.trim();
-        const capacidad = Number(values.capacidadMaxima);
-
-        if (!nombre) errors.nombre = 'Ingresa el nombre del espacio.';
-        else if (nombre.length > 120) errors.nombre = 'El nombre no puede superar 120 caracteres.';
-
-        if (!values.idTipoEspacio) errors.idTipoEspacio = 'Selecciona el tipo de espacio.';
-        if (!values.idCampus) errors.idCampus = 'Selecciona el campus.';
-
-        if (!values.horaApertura) errors.horaApertura = 'Ingresa la hora de apertura.';
-        if (!values.horaCierre) errors.horaCierre = 'Ingresa la hora de cierre.';
-        if (values.horaApertura && values.horaCierre && values.horaApertura >= values.horaCierre) {
-            errors.horaCierre = 'Debe ser posterior a la hora de apertura.';
-        }
-
-        if (!values.capacidadMaxima) errors.capacidadMaxima = 'Ingresa la capacidad máxima.';
-        else if (!Number.isInteger(capacidad) || capacidad <= 0) errors.capacidadMaxima = 'Debe ser un número entero mayor a cero.';
-
-        return errors;
     };
 
     const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (loading) return;
 
-        const errors = validate();
+        const errors = validateEspacio(values);
         setFieldErrors(errors);
         if (Object.keys(errors).length > 0) return;
 
@@ -112,7 +81,7 @@ const NuevoEspacio = () => {
                         label="Nombre del espacio"
                         name="nombre"
                         placeholder="Ej. Aula 1"
-                        maxLength={120}
+                        maxLength={NOMBRE_ESPACIO_MAX}
                         required
                         value={values.nombre}
                         onChange={handleChange('nombre')}

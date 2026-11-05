@@ -5,34 +5,23 @@ import Input from '../components/ui/Input';
 import PasswordInput from '../components/ui/PasswordInput';
 import { useAuth } from '../hooks/useAuth';
 import { getErrorMessage } from '../Services/apiError';
-
-type FieldErrors = {
-    idInstitucional?: string;
-    password?: string;
-};
+import { validateLogin, type LoginErrors } from '../validations/login.validate';
 
 const Login = () => {
     const { login } = useAuth();
 
     const [idInstitucional, setIdInstitucional] = useState('');
     const [password, setPassword] = useState('');
-    const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+    const [fieldErrors, setFieldErrors] = useState<LoginErrors>({});
     const [formError, setFormError] = useState('');
     const [submitting, setSubmitting] = useState(false);
-
-    const validate = (): FieldErrors => {
-        const errors: FieldErrors = {};
-        if (!idInstitucional.trim()) errors.idInstitucional = 'Ingresa tu Id de usuario.';
-        if (!password) errors.password = 'Ingresa tu contraseña.';
-        return errors;
-    };
 
     //Al iniciar sesion, GuestRoute redirige al Home o a la ruta que intentaba abrir
     const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (submitting) return;
 
-        const errors = validate();
+        const errors = validateLogin({ idInstitucional, password });
         setFieldErrors(errors);
         setFormError('');
         if (Object.keys(errors).length > 0) return;
@@ -41,7 +30,7 @@ const Login = () => {
         try {
             await login({ idInstitucional, password });
         } catch (error) {
-            setFormError(getErrorMessage(error, 'No se pudo iniciar sesión.'));
+            setFormError(getErrorMessage(error + 'No se pudo iniciar sesión.'));
             setSubmitting(false);
         }
     };

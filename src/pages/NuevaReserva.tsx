@@ -13,11 +13,14 @@ import { useEspacio } from '../hooks/useEspacio';
 import { useReserve } from '../hooks/useReserve';
 import { TODOS_LOS_REGISTROS } from '../models/Api.types';
 import { esReservable, type EspacioResponse } from '../models/Espacio.types';
-import { DIAS_SEMANA, TIPO_RESERVA, type ReserveResponse, type TipoReserva } from '../models/reserve.type';
-import { diasEnRango, formatFechaCorta, formatHora, hoy, toApiTime } from '../utils/fecha';
-
-//Regla de la API: la reserva por jornada admite como maximo 7 dias
-const MAX_DIAS_JORNADA = 7;
+import { DIAS_SEMANA, TIPO_RESERVA, type ReserveResponse } from '../models/reserve.type';
+import { formatFechaCorta, formatHora, hoy, toApiTime } from '../utils/fecha';
+import {
+    MAX_DIAS_JORNADA,
+    validateReserva,
+    type ReservaFieldErrors,
+    type ReservaFormValues,
+} from '../validations/reserva.validate';
 
 const TIPO_OPTIONS = [
     { value: TIPO_RESERVA.PorPeriodo, label: 'Evento único' },
@@ -35,27 +38,8 @@ const DIAS = [
     { label: 'Dom', value: DIAS_SEMANA.Domingo },
 ];
 
-type FormValues = {
-    idEspacio: string;
-    responsableEvento: string;
-    descripcion: string;
-    tipo: TipoReserva;
-    //Evento único: la fecha. Jornada: el primer día. Semestre: inicio del semestre
-    fecha: string;
-    //Jornada: el último día (opcional). Semestre: fin del semestre
-    fechaFin: string;
-    horaInicio: string;
-    horaFin: string;
-    //Días del semestre como suma de banderas DIAS_SEMANA
-    dias: number;
-    maximoAsistentes: string;
-    notaSeguridad: string;
-};
-
-type FieldErrors = Partial<Record<keyof FormValues, string>>;
-
 //Campos que se editan con un input o select (texto)
-type TextField = Exclude<keyof FormValues, 'tipo' | 'dias'>;
+type TextField = Exclude<keyof ReservaFormValues, 'tipo' | 'dias'>;
 
 const NuevaReserva = () => {
     const { user } = useAuth();
@@ -66,7 +50,7 @@ const NuevaReserva = () => {
     const { ReservePerPeriod, ReserveShift, ReserveSemester, loading, error } = useReserve();
 
     //El catalogo manda el espacio elegido en ?espacio=ID
-    const valoresIniciales = (): FormValues => ({
+    const valoresIniciales = (): ReservaFormValues => ({
         idEspacio: searchParams.get('espacio') ?? '',
         responsableEvento: user?.nombreCompleto ?? '',
         descripcion: '',
@@ -82,8 +66,8 @@ const NuevaReserva = () => {
 
     //null mientras no llega la primera respuesta
     const [espacios, setEspacios] = useState<EspacioResponse[] | null>(null);
-    const [values, setValues] = useState<FormValues>(valoresIniciales);
-    const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+    const [values, setValues] = useState<ReservaFormValues>(valoresIniciales);
+    const [fieldErrors, setFieldErrors] = useState<ReservaFieldErrors>({});
     const [creada, setCreada] = useState<{ reserva: ReserveResponse; mensaje: string } | null>(null);
 
     useEffect(() => {
@@ -118,7 +102,7 @@ const NuevaReserva = () => {
         return undefined;
     };
 
-    const setField = <K extends keyof FormValues>(field: K, value: FormValues[K]) => {
+    const setField = <K extends keyof ReservaFormValues>(field: K, value: ReservaFormValues[K]) => {
         setValues((prev) => ({ ...prev, [field]: value }));
         setFieldErrors((prev) => ({ ...prev, [field]: undefined }));
     };
@@ -127,61 +111,11 @@ const NuevaReserva = () => {
         setField(field, e.target.value);
     };
 
-    //Mismas reglas que la API (Reserva y Espacio)
-    const validate = (): FieldErrors => {
-        const errors: FieldErrors = {};
-        const asistentes = Number(values.maximoAsistentes);
-
-        if (!espacioSeleccionado) errors.idEspacio = 'Selecciona el espacio.';
-        if (!values.responsableEvento.trim()) errors.responsableEvento = 'Ingresa el responsable del evento.';
-        if (!values.descripcion.trim()) errors.descripcion = 'Ingresa el motivo del evento.';
-
-        if (!values.maximoAsistentes) errors.maximoAsistentes = 'Ingresa los asistentes esperados.';
-        else if (!Number.isInteger(asistentes) || asistentes <= 0) errors.maximoAsistentes = 'Debe ser un número entero mayor a cero.';
-        else if (espacioSeleccionado && asistentes > espacioSeleccionado.capacidadMaxima) {
-            errors.maximoAsistentes = `No puede superar el aforo del espacio (${espacioSeleccionado.capacidadMaxima}).`;
-        }
-
-        if (!values.fecha) errors.fecha = 'Selecciona la fecha.';
-        else if (values.fecha < hoy()) errors.fecha = 'No puede ser anterior a hoy.';
-
-        if (esJornada && values.fecha && values.fechaFin) {
-            if (values.fechaFin < values.fecha) errors.fechaFin = 'Debe ser igual o posterior a la fecha de inicio.';
-            else if (diasEnRango(values.fecha, values.fechaFin) > MAX_DIAS_JORNADA) {
-                errors.fechaFin = `La jornada admite máximo ${MAX_DIAS_JORNADA} días.`;
-            }
-        }
-
-        if (esSemestral) {
-            if (!values.fechaFin) errors.fechaFin = 'Selecciona el fin del semestre.';
-            else if (values.fecha && values.fechaFin < values.fecha) errors.fechaFin = 'Debe ser igual o posterior al inicio.';
-            if (values.dias === 0) errors.dias = 'Selecciona al menos un día de la semana.';
-        }
-
-        //La jornada usa el horario completo del espacio; los demas tipos piden hora de inicio y fin
-        if (!esJornada) {
-            if (!values.horaInicio) errors.horaInicio = 'Ingresa la hora de inicio.';
-            if (!values.horaFin) errors.horaFin = 'Ingresa la hora de fin.';
-
-            if (values.horaInicio && values.horaFin && values.horaInicio >= values.horaFin) {
-                errors.horaFin = 'Debe ser posterior a la hora de inicio.';
-            }
-            if (espacioSeleccionado) {
-                const apertura = formatHora(espacioSeleccionado.horaApertura);
-                const cierre = formatHora(espacioSeleccionado.horaCierre);
-                if (values.horaInicio && values.horaInicio < apertura) errors.horaInicio = `El espacio abre a las ${apertura}.`;
-                if (values.horaFin && values.horaFin > cierre) errors.horaFin = `El espacio cierra a las ${cierre}.`;
-            }
-        }
-
-        return errors;
-    };
-
     const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (loading) return;
 
-        const errors = validate();
+        const errors = validateReserva(values, espacioSeleccionado);
         setFieldErrors(errors);
         if (Object.keys(errors).length > 0 || !espacioSeleccionado) return;
 
