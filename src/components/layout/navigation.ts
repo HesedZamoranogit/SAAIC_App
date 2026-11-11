@@ -23,7 +23,7 @@ export const NAV_GROUPS: NavGroup[] = [
     title: 'Centro General',
     items: [
       { label: 'Catálogo de Espacios', to: '/catalogo' },
-      { label: 'Tus Reservas', to: '/mis-reservas' },
+      { label: 'Reservas', to: '/reservas' },
       { label: 'Reportes', to: '/reportes', roles: ['admin'] },
       { label: 'Asistencia', to: '/asistencia' },
     ],

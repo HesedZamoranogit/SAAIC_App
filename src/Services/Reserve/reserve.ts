@@ -1,4 +1,4 @@
-import type { ApiResponse } from "../../models/Api.types";
+import type { ApiResponse, PagedRequest, PagedResult} from "../../models/Api.types";
 import type {
   ReservaInstanciaDiaria,
   ReservePerPeriod,
@@ -85,3 +85,19 @@ export const getCalendario = async (
     throw new Error(getErrorMessage(error, "No se pudo obtener la disponibilidad."), { cause: error });
   }
 };
+
+export const getMisReservas = async (params:PagedRequest,): Promise<ApiResponse<PagedResult<ReserveResponse>>> => {
+  try{
+    const { data } = await api.get<ApiResponse<PagedResult<ReserveResponse>>>(
+      "/reservas", {params}
+    );
+    if (!data.success || !data.data) {
+      throw new Error(data.message ?? "No se pudieron obtener las reservas.");
+    }
+    
+    return data;
+  } catch (error) {
+    throw new Error(getErrorMessage(error, "No se pudieron obtener las reservas."), { cause: error });
+  }
+
+}

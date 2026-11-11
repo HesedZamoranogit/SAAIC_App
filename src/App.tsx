@@ -10,6 +10,7 @@ const Login = lazy(() => import('./pages/Login'));
 const Catalogo = lazy(() => import('./pages/Catalogo'));
 const NuevoEspacio = lazy(() => import('./pages/NuevoEspacio'));
 const NuevaReserva = lazy(() => import('./pages/NuevaReserva'));
+const MisReservas= lazy(() => import('./pages/MisReservas'));
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
                   <Route path='/Home' element={<Home />} />
                   <Route path='/catalogo' element={<Catalogo />} />
                   <Route path='/reservas/nueva' element={<NuevaReserva />} />
+                  <Route path='/reservas' element={<MisReservas />} />
 
                   {/* Solo administrador */}
                   <Route element={<AdminRoute />}>

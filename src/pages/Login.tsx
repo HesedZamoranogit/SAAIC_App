@@ -30,7 +30,7 @@ const Login = () => {
         try {
             await login({ idInstitucional, password });
         } catch (error) {
-            setFormError(getErrorMessage(error + 'No se pudo iniciar sesión.'));
+            setFormError('Acceso Control y/o contraseña incorrectos');
             setSubmitting(false);
         }
     };
