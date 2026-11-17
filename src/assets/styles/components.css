@@ -248,6 +248,15 @@
   font-size: var(--font-size-sm);
 }
 
+.form-success {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-success-bg);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-success-bg);
+  color: var(--color-success-text);
+  font-size: var(--font-size-sm);
+}
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -274,6 +283,45 @@
   .form-actions .btn {
     width: 100%;
   }
+}
+
+/* ---------- Modal (<dialog> nativo abierto con showModal) ---------- */
+
+.modal {
+  width: min(calc(100% - 2 * var(--space-4)), 480px);
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.modal__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6);
+}
+
+.modal__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.modal__title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.modal__text {
+  font-size: var(--font-size-ui);
+  color: var(--color-text-muted);
 }
 
 /* ---------- Opciones tipo tarjeta (RadioGroup y casillas de dias) ---------- */
@@ -369,12 +417,29 @@
 .espacio-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
   height: 100%;
-  padding: var(--space-5);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   background-color: var(--color-surface);
+}
+
+/* Imagen del espacio: por ahora un icono sobre fondo azul claro. Redondea solo las esquinas de arriba
+   (no se usa overflow: hidden en la tarjeta para que el menu de los 3 puntos no se recorte) */
+.espacio-card__media {
+  display: grid;
+  place-items: center;
+  height: 120px;
+  border-radius: calc(var(--radius-xl) - 1px) calc(var(--radius-xl) - 1px) 0 0;
+  background-color: var(--color-primary-50);
+  color: var(--color-primary);
+}
+
+.espacio-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5) var(--space-5);
 }
 
 .espacio-card__header {
@@ -404,15 +469,14 @@
 
 .espacio-card__details {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
   margin: 0;
 }
 
 .espacio-card__detail {
   display: flex;
-  justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--space-1);
   font-size: var(--font-size-sm);
 }
 
@@ -426,7 +490,82 @@
 }
 
 .espacio-card__footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   margin-top: auto;
+  padding-top: var(--space-1);
+}
+
+/* ---------- EspacioMenu (3 puntos de la tarjeta) ---------- */
+
+/* margin-left: auto lo manda al extremo derecho del footer */
+.espacio-menu {
+  position: relative;
+  margin-left: auto;
+}
+
+.espacio-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background-color: var(--color-divider);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.espacio-menu__trigger:hover,
+.espacio-menu__trigger[aria-expanded='true'] {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-strong);
+}
+
+.espacio-menu__trigger:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Se abre hacia arriba: el trigger esta al fondo de la tarjeta */
+.espacio-menu__dropdown {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + var(--space-2));
+  z-index: 10;
+  min-width: 160px;
+  margin: 0;
+  padding: var(--space-1) 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  list-style: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.espacio-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font-size: var(--font-size-ui);
+  text-align: left;
+  cursor: pointer;
+}
+
+.espacio-menu__item:hover,
+.espacio-menu__item:focus-visible {
+  outline: none;
+  background-color: var(--color-primary-50);
 }
 
 /* ---------- Card ---------- */

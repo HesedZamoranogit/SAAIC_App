@@ -9,8 +9,10 @@ const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
 const Catalogo = lazy(() => import('./pages/Catalogo'));
 const NuevoEspacio = lazy(() => import('./pages/NuevoEspacio'));
+const EditarEspacio = lazy(() => import('./pages/EditarEspacio'));
 const NuevaReserva = lazy(() => import('./pages/NuevaReserva'));
 const MisReservas= lazy(() => import('./pages/MisReservas'));
+const Reportes = lazy(() => import('./pages/Reportes'));
 
 function App() {
 
@@ -37,6 +39,8 @@ function App() {
                   {/* Solo administrador */}
                   <Route element={<AdminRoute />}>
                     <Route path='/espacios/nuevo' element={<NuevoEspacio />} />
+                    <Route path='/espacios/:id/editar' element={<EditarEspacio />} />
+                    <Route path='/reportes' element={<Reportes />} />
                   </Route>
                 </Route>
               </Route>

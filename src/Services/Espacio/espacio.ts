@@ -2,6 +2,7 @@ import { api } from "../api";
 import { getErrorMessage } from "../apiError";
 import type { ApiResponse, PagedRequest, PagedResult } from "../../models/Api.types";
 import type {
+  ActualizarEspacioRequest,
   EspacioRequest,
   EspacioResponse,
 } from "../../models/Espacio.types";
@@ -40,3 +41,32 @@ export const getEspacios = async (params: PagedRequest,idCampus?: number, idTipo
     throw new Error(getErrorMessage(error, "No se pudo obtener los espacios."), { cause: error });
   }
 }
+
+//Un espacio por id (la API lo devuelve aunque este inactivo)
+export const getEspacioPorId = async (id: number): Promise<ApiResponse<EspacioResponse>> => {
+  try {
+    const { data } = await api.get<ApiResponse<EspacioResponse>>(`/Espacios/${id}`);
+    if (!data.success || !data.data) {
+      throw new Error(data.message ?? "No se pudo obtener el espacio.");
+    }
+    return data;
+  } catch (error) {
+    throw new Error(getErrorMessage(error, "No se pudo obtener el espacio."), { cause: error });
+  }
+};
+
+//Solo administrador (la API tambien lo exige)
+export const actualizarEspacio = async (
+  id: number,
+  dto: ActualizarEspacioRequest,
+): Promise<ApiResponse<EspacioResponse>> => {
+  try {
+    const { data } = await api.put<ApiResponse<EspacioResponse>>(`/Espacios/${id}`, dto);
+    if (!data.success || !data.data) {
+      throw new Error(data.message ?? "No se pudo actualizar el espacio.");
+    }
+    return data;
+  } catch (error) {
+    throw new Error(getErrorMessage(error, "No se pudo actualizar el espacio."), { cause: error });
+  }
+};

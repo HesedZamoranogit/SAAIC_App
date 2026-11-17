@@ -159,6 +159,53 @@
   color: var(--color-danger-text);
 }
 
+/* Filtros del catalogo (campus y buscador), alineados a la derecha */
+.catalog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-4);
+}
+
+/* Etiqueta a la izquierda del control ("Campus [ Navojoa Sur ]") en vez de arriba */
+.catalog-filters .field {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+  width: auto;
+}
+
+.catalog-filters .field__control {
+  flex: 1;
+  min-width: 200px;
+}
+
+.catalog-filters .catalog-filters__search {
+  flex: 0 1 280px;
+}
+
+/* La etiqueta "Buscar" solo la leen los lectores de pantalla (el placeholder ya lo dice a la vista) */
+.catalog-filters__search .field__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .catalog-filters .field {
+    width: 100%;
+  }
+
+  .catalog-filters .catalog-filters__search {
+    flex-basis: 100%;
+  }
+}
+
 /* ---------- Nueva reserva ---------- */
 
 /* Formulario a la izquierda y disponibilidad a la derecha */
@@ -301,5 +348,112 @@
 @media (max-width: 1024px) {
   .dashboard__content--with-aside {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Reportes ---------- */
+
+.report-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+}
+
+.report-filters .field {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+/* Boton "Generar": ocupa solo lo que mide (.field le da width: 100%) y queda a la altura de los campos */
+.report-filters .report-filters__submit {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.report-filters__submit .btn {
+  min-height: var(--control-height);
+}
+
+.report-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.report-result__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.report-result__titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.report-result__title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.report-result__meta,
+.report-note {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.report-result__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* "Exportar PDF" usa el dialogo de impresion: se imprime solo el reporte, sin menu, filtros ni botones */
+@media print {
+  /* Chrome/Edge/Firefox ponen fecha, titulo, URL y numero de pagina en el margen de la hoja:
+     sin margen de pagina no tienen donde dibujarse. El espacio en blanco lo da el padding de abajo */
+  @page {
+    margin: 0;
+  }
+
+  .sidebar,
+  .app-topbar,
+  .app-layout__backdrop,
+  .report-filters,
+  .report-result__actions,
+  .report-note,
+  .form-error,
+  .form-success {
+    display: none;
+  }
+
+  .app-layout {
+    display: block;
+  }
+
+  .app-layout__main {
+    padding: 1.5cm;
+  }
+
+  .table-scroll {
+    overflow: visible;
+  }
+
+  .table-scroll table {
+    min-width: 0;
+  }
+
+  .table-scroll th,
+  .table-scroll td {
+    white-space: normal;
   }
 }

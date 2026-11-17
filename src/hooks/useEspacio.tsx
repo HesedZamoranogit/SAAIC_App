@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
-import type { EspacioRequest, EspacioResponse } from "../models/Espacio.types";
+import type { ActualizarEspacioRequest, EspacioRequest, EspacioResponse } from "../models/Espacio.types";
 import type { ApiResponse, PagedRequest, PagedResult } from "../models/Api.types";
-import { Espacio, getEspacios } from "../Services/Espacio/espacio";
+import { actualizarEspacio, Espacio, getEspacioPorId, getEspacios } from "../Services/Espacio/espacio";
 
 
 export function useEspacio() {
@@ -39,10 +39,42 @@ export function useEspacio() {
         }
 
     }, []);
+    const GetEspacio = useCallback(async (id: number): Promise<ApiResponse<EspacioResponse> | undefined> => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const response = await getEspacioPorId(id);
+            setLoading(false);
+            return response;
+        } catch (error) {
+            setError((error as Error).message);
+            setLoading(false);
+            return undefined;
+        }
+
+    }, []);
+    const ActualizarEspacio = useCallback(async (id: number, dto: ActualizarEspacioRequest): Promise<ApiResponse<EspacioResponse> | undefined> => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const response = await actualizarEspacio(id, dto);
+            setLoading(false);
+            return response;
+        } catch (error) {
+            setError((error as Error).message);
+            setLoading(false);
+            return undefined;
+        }
+
+    }, []);
 
     return {
         espacio,
         GetEspacios,
+        GetEspacio,
+        ActualizarEspacio,
         loading,
         error
     };

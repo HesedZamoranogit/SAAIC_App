@@ -65,16 +65,17 @@ export const reserveSemester = async (
   }
 };
 
-//Reservas confirmadas (por dia) dentro de un rango yyyy-MM-dd; con idEspacio solo las de ese espacio
+//Reservas confirmadas (por dia) dentro de un rango yyyy-MM-dd; con idEspacio / idCampus solo las de ese espacio / campus
 export const getCalendario = async (
   fechaInicio: string,
   fechaFin: string,
   idEspacio?: number,
+  idCampus?: number,
 ): Promise<ApiResponse<ReservaInstanciaDiaria[]>> => {
   try {
     const { data } = await api.get<ApiResponse<ReservaInstanciaDiaria[]>>(
       "/Reservas/calendario",
-      { params: { fechaInicio, fechaFin, idEspacio } },
+      { params: { fechaInicio, fechaFin, idEspacio, idCampus } },
     );
     if (!data.success || !data.data) {
       throw new Error(data.message ?? "No se pudo obtener la disponibilidad.");

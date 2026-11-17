@@ -36,3 +36,8 @@ export type EspacioRequest = {
   capacidadMaxima: number,
   estado: EstadoEspacio
 }
+
+//PUT /Espacios/{id}: los mismos campos que al crear mas "active" (si se omite, la API lo deja en true)
+export type ActualizarEspacioRequest = EspacioRequest & {
+  active: boolean;
+};
