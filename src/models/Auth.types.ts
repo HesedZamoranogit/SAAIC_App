@@ -32,3 +32,14 @@ export type Session = {
   expiresAtUtc: string;
   user: SessionUser;
 };
+
+export type RolSistema = 'Profesor' | 'Administrador';
+
+export type RegistrarUsuarioRequest = {
+  idInstitucional: string;
+  email: string;
+  password: string;
+  nombreCompleto: string;
+  departamento: string;
+  rol: RolSistema;
+};

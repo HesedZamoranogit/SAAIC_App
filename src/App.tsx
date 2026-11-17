@@ -12,7 +12,11 @@ const NuevoEspacio = lazy(() => import('./pages/NuevoEspacio'));
 const EditarEspacio = lazy(() => import('./pages/EditarEspacio'));
 const NuevaReserva = lazy(() => import('./pages/NuevaReserva'));
 const MisReservas= lazy(() => import('./pages/MisReservas'));
+<<<<<<< Updated upstream
 const Reportes = lazy(() => import('./pages/Reportes'));
+=======
+const Usuarios = lazy(() => import('./pages/Usuarios'));
+>>>>>>> Stashed changes
 
 function App() {
 
@@ -39,8 +43,12 @@ function App() {
                   {/* Solo administrador */}
                   <Route element={<AdminRoute />}>
                     <Route path='/espacios/nuevo' element={<NuevoEspacio />} />
+<<<<<<< Updated upstream
                     <Route path='/espacios/:id/editar' element={<EditarEspacio />} />
                     <Route path='/reportes' element={<Reportes />} />
+=======
+                    <Route path='/usuarios' element={<Usuarios />} />
+>>>>>>> Stashed changes
                   </Route>
                 </Route>
               </Route>
