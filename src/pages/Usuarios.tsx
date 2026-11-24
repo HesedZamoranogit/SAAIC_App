@@ -43,7 +43,7 @@ const Usuarios = () => {
         title="Registro de usuarios"
         subtitle="El formulario solicita los datos institucionales necesarios para crear una cuenta."
       >
-        <p>De momento solo esta la opcion de registrar usuarios, no sabemos si habra mas asi que de momento esto queda vacio</p>
+        <p>Espacio para gestionar usuarios</p>
       </Card>
 
       {modalOpen && (
