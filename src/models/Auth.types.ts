@@ -17,6 +17,15 @@ export type AuthResponse = {
   roles: string[];
 };
 
+//Respuesta de GET /Auth/perfil: se arma con los claims del token, por eso cualquiera puede venir null
+export type PerfilResponse = {
+  userId: string;
+  email: string | null;
+  nombreCompleto: string | null;
+  idInstitucional: string | null;
+  roles: string[];
+};
+
 //Usuario autenticado tal como lo usa la aplicacion
 export type SessionUser = {
   id: string;
